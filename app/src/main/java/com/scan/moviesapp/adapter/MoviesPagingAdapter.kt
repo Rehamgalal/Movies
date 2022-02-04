@@ -55,13 +55,10 @@ class MoviesPagingAdapter @Inject constructor(): PagingDataAdapter<MovieItem,  R
     }
     class MoviesViewHolder(private val  binding: MovieItemBinding, private val listener: OnMovieClicked): RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MovieItem){
-            val imagePath =  "https://farm${item.farm}.static.flickr.com/${item.server}/${item.id}_${item.secret}.jpg"
-            Glide.with(itemView.context)
-                .load(imagePath)
-                .placeholder(R.drawable.placeholder)
-                .into(binding.imageView)
-            binding.title.text = item.title
-                listener.onClick(item)
+            binding.item = item
+             itemView.setOnClickListener {
+                    listener.onClick(item)
+                }
             }
         }
 

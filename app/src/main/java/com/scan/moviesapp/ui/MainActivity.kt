@@ -1,14 +1,12 @@
 package com.scan.moviesapp.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.initialization.InitializationStatus
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener
+import com.bumptech.glide.Glide
 import com.scan.moviesapp.R
 import com.scan.moviesapp.adapter.MoviesPagingAdapter
 import com.scan.moviesapp.databinding.ActivityMainBinding
@@ -16,7 +14,9 @@ import com.scan.moviesapp.model.MovieItem
 import com.scan.moviesapp.ui.viewmodel.MainActivityViewModel
 import com.scan.moviesapp.utils.OnAdClicked
 import com.scan.moviesapp.utils.OnMovieClicked
+import com.stfalcon.imageviewer.StfalconImageViewer
 import kotlinx.coroutines.flow.collectLatest
+
 
 class MainActivity : AppCompatActivity(), OnMovieClicked, OnAdClicked {
 
@@ -28,12 +28,6 @@ class MainActivity : AppCompatActivity(), OnMovieClicked, OnAdClicked {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        MobileAds.initialize(this, object : OnInitializationCompleteListener {
-            override fun onInitializationComplete(p0: InitializationStatus) {
-                Toast.makeText (this@MainActivity, "AdMob Sdk Initialize $p0", Toast.LENGTH_LONG).show();
-            }
-
-        })
         initRecyclerView()
         getData()
     }
@@ -55,9 +49,16 @@ class MainActivity : AppCompatActivity(), OnMovieClicked, OnAdClicked {
     }
 
     override fun onClick(movie: MovieItem) {
-
+        val imagePath = "https://farm${movie.farm}.static.flickr.com/${movie.server}/${movie.id}_${movie.secret}.jpg"
+        val list = mutableListOf<String>()
+        list.add(imagePath)
+        StfalconImageViewer.Builder(this, list) { imageView, image ->
+            Glide.with(this@MainActivity)
+                .load(imagePath)
+                .placeholder(R.drawable.placeholder)
+                .into(imageView!!)
+        }.show()
     }
-
     override fun onClick() {
 
     }
