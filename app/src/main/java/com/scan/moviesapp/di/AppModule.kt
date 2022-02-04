@@ -2,6 +2,7 @@ package com.scan.moviesapp.di
 
 import android.app.Application
 import com.scan.moviesapp.api.MoviesApi
+import com.scan.moviesapp.db.MoviesDataBase
 import com.scan.moviesapp.other.Constants
 import dagger.Module
 import dagger.Provides
@@ -39,5 +40,11 @@ class AppModule(val application: Application) {
     @Provides
     fun getRetrofitService(retrofit: Retrofit): MoviesApi {
         return retrofit.create(MoviesApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun providesMoviesDatabase(): MoviesDataBase {
+        return MoviesDataBase.buildDatabase(application.applicationContext)
     }
 }

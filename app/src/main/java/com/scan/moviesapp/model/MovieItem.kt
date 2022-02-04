@@ -3,12 +3,15 @@ package com.scan.moviesapp.model
 import android.os.Parcelable
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.bumptech.glide.Glide
 import kotlinx.android.parcel.Parcelize
 
-
+@Entity
 @Parcelize
 data class MovieItem(
+    @PrimaryKey
     val id: String,
     val owner: String,
     val secret: String,

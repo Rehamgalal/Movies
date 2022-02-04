@@ -1,10 +1,11 @@
 package com.scan.moviesapp.ui
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View.GONE
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.scan.moviesapp.R
@@ -17,7 +18,7 @@ import com.scan.moviesapp.utils.OnMovieClicked
 import com.stfalcon.imageviewer.StfalconImageViewer
 import kotlinx.coroutines.flow.collectLatest
 
-
+@ExperimentalPagingApi
 class MainActivity : AppCompatActivity(), OnMovieClicked, OnAdClicked {
 
     private lateinit var binding: ActivityMainBinding
@@ -43,6 +44,7 @@ class MainActivity : AppCompatActivity(), OnMovieClicked, OnAdClicked {
     private fun getData() {
         lifecycleScope.launchWhenCreated {
             viewModel.listResult.collectLatest {
+                binding.progressBar.visibility = GONE
                 recyclerAdapter.submitData(it)
             }
         }

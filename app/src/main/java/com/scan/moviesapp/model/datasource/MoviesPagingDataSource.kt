@@ -4,7 +4,6 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.scan.moviesapp.api.MoviesApi
 import com.scan.moviesapp.model.MovieItem
-import com.scan.moviesapp.other.Constants
 import java.lang.Exception
 import javax.inject.Inject
 
