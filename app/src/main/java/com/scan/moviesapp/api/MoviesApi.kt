@@ -10,5 +10,5 @@ interface MoviesApi {
 
     @GET("services/rest/")
     suspend fun getMovies(@Query("method")method:String,@Query("format")format:String,@Query("nojsoncallback")noJsoncallback:String,@Query("text")text:String,
-    @Query("page")page:Int, @Query("per_page")perPage:Int,@Query("api_key")api_Key:String):Response<PhotosModel>
+    @Query("page")page:Int, @Query("per_page")perPage:Int):Response<PhotosModel>
 }

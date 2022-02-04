@@ -28,7 +28,7 @@ class AppModule(val application: Application) {
     @Provides
     fun provideOKHttpClient(): OkHttpClient {
         val requestInterceptor = Interceptor {chain ->
-            val url = chain.request().url.newBuilder().build()
+            val url = chain.request().url.newBuilder().addQueryParameter("api_key", Constants.API_KEY).build()
             val request = chain.request().newBuilder().url(url).build()
             return@Interceptor chain.proceed(request)
         }

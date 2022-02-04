@@ -38,8 +38,6 @@ class MoviesPagingAdapter @Inject constructor(): PagingDataAdapter<MovieItem,  R
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == MOVIE_TYPE) {
             (holder as MoviesViewHolder).bind(getItem(position)!!)
-        } else {
-            (holder as AddViewHolder).bind()
         }
 
     }
@@ -63,10 +61,10 @@ class MoviesPagingAdapter @Inject constructor(): PagingDataAdapter<MovieItem,  R
         }
 
     class AddViewHolder(private val  binding: AdItemBinding, private val listener: OnAdClicked): RecyclerView.ViewHolder(binding.root) {
-        fun bind(){
-            val adRequest = AdRequest.Builder().build()
+        init {
             binding.bannerAdView.adSize = AdSize.BANNER
             binding.bannerAdView.adUnitId = "ca-app-pub-3940256099942544/6300978111"
+            val adRequest = AdRequest.Builder().build()
             binding.bannerAdView.loadAd(adRequest)
         }
     }

@@ -16,7 +16,7 @@ class MoviesPagingDataSource @Inject constructor(private  val service:MoviesApi)
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MovieItem> {
         try {
             val pageNumber = params.key ?: 1
-            val response = service.getMovies("flickr.photos.search", "json", "50", "Color",pageNumber,20,Constants.API_KEY)
+            val response = service.getMovies("flickr.photos.search", "json", "50", "Color",pageNumber,20)
             val responseData = mutableListOf<MovieItem>()
             val data = response.body()?.photos?.photo ?: emptyList()
             responseData.addAll(data)

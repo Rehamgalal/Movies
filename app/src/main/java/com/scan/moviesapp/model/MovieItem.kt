@@ -1,6 +1,5 @@
 package com.scan.moviesapp.model
 
-import android.R
 import android.os.Parcelable
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
