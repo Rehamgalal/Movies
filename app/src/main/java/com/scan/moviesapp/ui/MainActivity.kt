@@ -2,6 +2,7 @@ package com.scan.moviesapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.view.View.GONE
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -35,23 +36,25 @@ class MainActivity : AppCompatActivity(), OnMovieClicked, OnAdClicked {
 
     private fun initRecyclerView() {
         recyclerAdapter = MoviesPagingAdapter()
-        recyclerAdapter.setListener(this@MainActivity,this)
+        recyclerAdapter.setListener(this@MainActivity, this)
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = recyclerAdapter}
+            adapter = recyclerAdapter
+        }
     }
 
     private fun getData() {
         lifecycleScope.launchWhenCreated {
             viewModel.listResult.collectLatest {
-                binding.progressBar.visibility = GONE
                 recyclerAdapter.submitData(it)
+                binding.progressBar.visibility = GONE
             }
         }
     }
 
     override fun onClick(movie: MovieItem) {
-        val imagePath = "https://farm${movie.farm}.static.flickr.com/${movie.server}/${movie.id}_${movie.secret}.jpg"
+        val imagePath =
+            "https://farm${movie.farm}.static.flickr.com/${movie.server}/${movie.id}_${movie.secret}.jpg"
         val list = mutableListOf<String>()
         list.add(imagePath)
         StfalconImageViewer.Builder(this, list) { imageView, image ->
@@ -61,6 +64,7 @@ class MainActivity : AppCompatActivity(), OnMovieClicked, OnAdClicked {
                 .into(imageView!!)
         }.show()
     }
+
     override fun onClick() {
 
     }

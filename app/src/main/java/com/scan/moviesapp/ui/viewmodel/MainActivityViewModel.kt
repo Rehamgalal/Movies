@@ -36,5 +36,4 @@ class MainActivityViewModel(@NonNull application: Application) : AndroidViewMode
     private fun getListPosts() : Flow<PagingData<MovieItem>> {
         return  repository.getMovies().cachedIn(viewModelScope)
     }
-
 }

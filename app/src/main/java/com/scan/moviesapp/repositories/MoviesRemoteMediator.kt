@@ -1,4 +1,4 @@
-package com.scan.moviesapp.model.datasource
+package com.scan.moviesapp.repositories
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
@@ -27,15 +27,12 @@ class MoviesRemoteMediator @Inject constructor(private  val service: MoviesApi, 
         return try {
             val loadKey = when (loadType) {
                 LoadType.REFRESH -> null
-                LoadType.PREPEND ->
-                    return MediatorResult.Success(endOfPaginationReached = true)
+                LoadType.PREPEND ->return MediatorResult.Success(endOfPaginationReached = true)
                 LoadType.APPEND -> {
                     val lastItem = state.lastItemOrNull()
-                    if (lastItem == null) {
-                        return MediatorResult.Success(
-                            endOfPaginationReached = true
-                        )
-                    }
+                            ?: return MediatorResult.Success(
+                                    endOfPaginationReached = true
+                            )
 
                     lastItem.id
                 }
@@ -61,10 +58,12 @@ class MoviesRemoteMediator @Inject constructor(private  val service: MoviesApi, 
                 userDao.insert(responseData?.photo!!)
             }
 
+            val items = responseData?.photo?.map { it }
+
             pageNumber = responseData?.page?.plus(1)!!
 
             MediatorResult.Success(
-                endOfPaginationReached = responseData.page.toLong() == responseData.total
+                endOfPaginationReached = items?.isEmpty()!!
             )
 
         } catch (e: IOException) {

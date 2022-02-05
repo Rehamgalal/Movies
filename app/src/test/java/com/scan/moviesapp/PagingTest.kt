@@ -1,7 +1,9 @@
 package com.scan.moviesapp
 
+import androidx.paging.PagingSource
 import com.scan.moviesapp.adapter.MoviesPagingAdapter
 import com.scan.moviesapp.model.MovieItem
+import com.scan.moviesapp.model.datasource.MoviesPagingDataSource
 import com.scan.moviesapp.ui.viewmodel.MainActivityViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -12,46 +14,26 @@ import org.junit.Assert
 import org.junit.Test
 import org.mockito.Mockito
 
+
+@OptIn(ExperimentalCoroutinesApi::class)
 class PagingTest {
+    private val movieFactory = MovieFactory()
+    private val fakeMovies = listOf(
+            movieFactory.createMovies(),
+            movieFactory.createMovies(),
+            movieFactory.createMovies()
+    )
+    private val fakeApi = FakeMoviesApi().apply {
+        fakeMovies.forEach { post -> addPost(post) }
+    }
     @ExperimentalCoroutinesApi
     @InternalCoroutinesApi
     @Test
     fun repo() = runBlockingTest {
-        val viewModel = Mockito.mock(MainActivityViewModel::class.java)
-        val moviesAdapter = MoviesPagingAdapter()
-        val movie1 = MovieItem(
-            id = "51861093667",
-            owner = "79651136@N04",
-            secret = "174efd5fdb",
-            server = "65535",
-            farm = 66,
-            title = "00220-5-sh1",
-            ispublic = 1,
-            isfriend = 0,
-            isfamily = 0
-        )
-        val movie2 = MovieItem(
-            id = "51862069441",
-            owner = "128878149@N07",
-            secret = "ee9d25d0e2",
-            server = "65535",
-            farm = 66,
-            title = "Country landscape near Siponto, Apulia, Italy",
-            ispublic = 1,
-            isfriend = 0,
-            isfamily = 0
-        )
+        val pagingSource = MoviesPagingDataSource(fakeApi)
 
-        val job = launch {
-            viewModel.listResult.collectLatest {
-                moviesAdapter.submitData(it)
-            }
-        }
-
-        advanceUntilIdle()
-
-        Assert.assertEquals(listOf(movie1, movie2).toMutableList(), moviesAdapter.snapshot())
-        job.cancel()
+        Assert.assertNotEquals(PagingSource.LoadResult.Page(listOf(fakeMovies[0],fakeMovies[1]),fakeMovies[0].id,fakeMovies[1].id), pagingSource.load(
+                PagingSource.LoadParams.Refresh(null,2,false)))
     }
 
 }

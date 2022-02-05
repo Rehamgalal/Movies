@@ -1,6 +1,5 @@
 package com.scan.moviesapp.api
 
-import com.scan.moviesapp.model.MoviesResponse
 import com.scan.moviesapp.model.PhotosModel
 import retrofit2.Response
 import retrofit2.http.GET

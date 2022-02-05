@@ -5,7 +5,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import com.scan.moviesapp.api.MoviesApi
 import com.scan.moviesapp.db.MoviesDataBase
-import com.scan.moviesapp.model.datasource.MoviesRemoteMediator
 import javax.inject.Inject
 
 @ExperimentalPagingApi
