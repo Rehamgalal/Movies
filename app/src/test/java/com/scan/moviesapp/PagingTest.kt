@@ -1,21 +1,16 @@
 package com.scan.moviesapp
 
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingSource
-import com.scan.moviesapp.adapter.MoviesPagingAdapter
-import com.scan.moviesapp.model.MovieItem
 import com.scan.moviesapp.model.datasource.MoviesPagingDataSource
-import com.scan.moviesapp.ui.viewmodel.MainActivityViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert
 import org.junit.Test
-import org.mockito.Mockito
 
 
-@OptIn(ExperimentalCoroutinesApi::class)
+@ExperimentalPagingApi
 class PagingTest {
     private val movieFactory = MovieFactory()
     private val fakeMovies = listOf(

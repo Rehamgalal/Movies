@@ -16,15 +16,13 @@ import com.scan.moviesapp.adapter.MoviesPagingAdapter
 import com.scan.moviesapp.databinding.ActivityMainBinding
 import com.scan.moviesapp.model.MovieItem
 import com.scan.moviesapp.ui.viewmodel.MainActivityViewModel
-import com.scan.moviesapp.utils.OnAdClicked
 import com.scan.moviesapp.utils.OnMovieClicked
 import com.stfalcon.imageviewer.StfalconImageViewer
 import kotlinx.coroutines.flow.collectLatest
 
 @ExperimentalPagingApi
-class MainActivity : AppCompatActivity(), OnMovieClicked, OnAdClicked {
+class MainActivity : AppCompatActivity(), OnMovieClicked {
 
-    private var initialLayoutComplete = false
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainActivityViewModel by viewModels()
     private lateinit var recyclerAdapter: MoviesPagingAdapter
@@ -52,7 +50,7 @@ class MainActivity : AppCompatActivity(), OnMovieClicked, OnAdClicked {
 
     private fun initRecyclerView() {
         recyclerAdapter = MoviesPagingAdapter()
-        recyclerAdapter.setListener(this@MainActivity, this)
+        recyclerAdapter.setListener(this@MainActivity)
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = recyclerAdapter
@@ -69,19 +67,15 @@ class MainActivity : AppCompatActivity(), OnMovieClicked, OnAdClicked {
 
     override fun onClick(movie: MovieItem) {
         val imagePath =
-            "https://farm${movie.farm}.static.flickr.com/${movie.server}/${movie.id}_${movie.secret}.jpg"
+                "https://farm${movie.farm}.static.flickr.com/${movie.server}/${movie.id}_${movie.secret}.jpg"
         val list = mutableListOf<String>()
         list.add(imagePath)
-        StfalconImageViewer.Builder(this, list) { imageView, image ->
+        StfalconImageViewer.Builder(this, list) { imageView, _ ->
             Glide.with(this@MainActivity)
-                .load(imagePath)
-                .placeholder(R.drawable.placeholder)
-                .into(imageView!!)
+                    .load(imagePath)
+                    .placeholder(R.drawable.placeholder)
+                    .into(imageView!!)
         }.show()
-    }
-
-    override fun onClick() {
-
     }
 
 }

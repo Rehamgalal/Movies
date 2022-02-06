@@ -11,23 +11,23 @@ import com.google.android.gms.ads.*
 import com.scan.moviesapp.databinding.AdItemBinding
 import com.scan.moviesapp.databinding.MovieItemBinding
 import com.scan.moviesapp.model.MovieItem
-import com.scan.moviesapp.utils.OnAdClicked
 import com.scan.moviesapp.utils.OnMovieClicked
 import javax.inject.Inject
 
 
-class MoviesPagingAdapter @Inject constructor(): PagingDataAdapter<MovieItem, RecyclerView.ViewHolder>(
-    MoviesComprator
-) {
+class MoviesPagingAdapter @Inject constructor() :
+    PagingDataAdapter<MovieItem, RecyclerView.ViewHolder>(
+        MoviesComprator
+    ) {
 
-    private var movieListener: OnMovieClicked ? = null
-    private var adListener: OnAdClicked ? = null
     private val ADD_TYPE = 1
-    private val MOVIE_TYPE =  2
-    fun setListener(movieListener: OnMovieClicked, adListener: OnAdClicked) {
+    private val MOVIE_TYPE = 2
+
+    private var movieListener: OnMovieClicked? = null
+    fun setListener(movieListener: OnMovieClicked) {
         this.movieListener = movieListener
-        this.adListener  = adListener
     }
+
     object MoviesComprator : DiffUtil.ItemCallback<MovieItem>() {
         override fun areItemsTheSame(oldItem: MovieItem, newItem: MovieItem) =
             oldItem.id == newItem.id
@@ -57,38 +57,39 @@ class MoviesPagingAdapter @Inject constructor(): PagingDataAdapter<MovieItem, Re
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            ), adListener!!
+            )
         )
     }
 
 
     override fun getItemViewType(position: Int): Int {
-        return if (position % 6 == 0)  ADD_TYPE else MOVIE_TYPE
+        return if (position % 6 == 0) ADD_TYPE else MOVIE_TYPE
     }
+
     class MoviesViewHolder(
         private val binding: MovieItemBinding,
         private val listener: OnMovieClicked
-    ): RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: MovieItem){
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: MovieItem) {
             binding.item = item
-             itemView.setOnClickListener {
-                    listener.onClick(item)
-                }
+            itemView.setOnClickListener {
+                listener.onClick(item)
             }
         }
+    }
 
     @RequiresApi(Build.VERSION_CODES.R)
-    class AddViewHolder(private val binding: AdItemBinding, private val listener: OnAdClicked): RecyclerView.ViewHolder(
+    class AddViewHolder(binding: AdItemBinding) : RecyclerView.ViewHolder(
         binding.root
     ) {
         init {
             val adView = AdView(itemView.context)
             binding.adViewContainer.addView(adView)
-                adView.adUnitId = "ca-app-pub-3940256099942544/9214589741"
-                adView.adSize = AdSize.BANNER
-                val adRequest = AdRequest.Builder().build()
-                adView.loadAd(adRequest)
+            adView.adUnitId = "ca-app-pub-3940256099942544/9214589741"
+            adView.adSize = AdSize.BANNER
+            val adRequest = AdRequest.Builder().build()
+            adView.loadAd(adRequest)
         }
     }
-    }
+}
 

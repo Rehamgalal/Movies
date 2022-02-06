@@ -9,7 +9,7 @@ import com.scan.moviesapp.other.Constants.DATABASE_NAME
 import com.scan.moviesapp.other.Constants.DATABASE_VERSION
 
 
-@Database(entities = arrayOf(MovieItem::class),version = DATABASE_VERSION)
+@Database(entities = [MovieItem::class],version = DATABASE_VERSION)
 abstract class MoviesDataBase: RoomDatabase(){
     abstract fun moviesDao(): MoviesDao
 

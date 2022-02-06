@@ -12,7 +12,7 @@ import java.lang.Integer.min
 class FakeMoviesApi: MoviesApi {
 
     private val model = mutableMapOf<String, SubMovie>()
-    var failureMsg: String? = null
+    private var failureMsg: String? = null
     fun addPost(post: MovieItem) {
         val subreddit = model.getOrPut(post.id) {
             SubMovie(items = arrayListOf())
@@ -29,8 +29,7 @@ class FakeMoviesApi: MoviesApi {
         if (before != null) return emptyList()
 
         val subMovie = findSubReddit(submovie)
-        val posts = subMovie.findPosts(limit, after)
-        return posts
+        return subMovie.findPosts(limit, after)
     }
 
     private fun findSubReddit(subreddit: String) =
@@ -42,7 +41,7 @@ class FakeMoviesApi: MoviesApi {
             throw IOException(it)
         }
         val items = findPosts(method, perPage, (page-1).toString(), (page+1).toString())
-        val nextAfter = items.lastOrNull()
+        items.lastOrNull()
         return Response.success(1, PhotosModel(MoviesResponse(page,2,perPage,2, arrayListOf(MovieItem("1","66","2334544","55555",1,"title",0,0,0)))))
     }
 

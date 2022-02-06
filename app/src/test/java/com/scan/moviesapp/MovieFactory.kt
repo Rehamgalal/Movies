@@ -9,9 +9,8 @@ class MovieFactory {
 
     fun createMovies(): MovieItem {
         val id = counter.incrementAndGet()
-        val movie = MovieItem(id.toString(),"",""
-                ,"",0,"title", 0,0,0)
 
-        return movie
+        return MovieItem(id.toString(),"",""
+                ,"",0,"title", 0,0,0)
     }
 }
