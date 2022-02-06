@@ -1,8 +1,7 @@
 # Movies
 Simple Application to show movies and advertisemnets
 
-#Technologies
-
+# Technologies
 This Application is build with MVVM Architecture and Kotlin
 Databinding is usined for fetching data
 Room database was used using RemoteMediator to cache the responses
