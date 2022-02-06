@@ -63,7 +63,7 @@ class MoviesPagingAdapter @Inject constructor(): PagingDataAdapter<MovieItem, Re
 
 
     override fun getItemViewType(position: Int): Int {
-        return if (position % 5 == 0)  ADD_TYPE else MOVIE_TYPE
+        return if (position % 6 == 0)  ADD_TYPE else MOVIE_TYPE
     }
     class MoviesViewHolder(
         private val binding: MovieItemBinding,
