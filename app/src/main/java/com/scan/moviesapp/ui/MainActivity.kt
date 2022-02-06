@@ -2,13 +2,12 @@ package com.scan.moviesapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.view.View.GONE
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.gms.ads.*
 import com.scan.moviesapp.R
 import com.scan.moviesapp.adapter.MoviesPagingAdapter
 import com.scan.moviesapp.databinding.ActivityMainBinding
@@ -22,14 +21,22 @@ import kotlinx.coroutines.flow.collectLatest
 @ExperimentalPagingApi
 class MainActivity : AppCompatActivity(), OnMovieClicked, OnAdClicked {
 
+    private var initialLayoutComplete = false
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainActivityViewModel by viewModels()
     private lateinit var recyclerAdapter: MoviesPagingAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+        MobileAds.initialize(this) { }
+        MobileAds.setRequestConfiguration(
+            RequestConfiguration.Builder()
+                .setTestDeviceIds(listOf("ABCDEF012345"))
+                .build()
+        )
         initRecyclerView()
         getData()
     }
@@ -47,7 +54,6 @@ class MainActivity : AppCompatActivity(), OnMovieClicked, OnAdClicked {
         lifecycleScope.launchWhenCreated {
             viewModel.listResult.collectLatest {
                 recyclerAdapter.submitData(it)
-                binding.progressBar.visibility = GONE
             }
         }
     }
@@ -68,4 +74,5 @@ class MainActivity : AppCompatActivity(), OnMovieClicked, OnAdClicked {
     override fun onClick() {
 
     }
+
 }

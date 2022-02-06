@@ -5,6 +5,7 @@ import com.scan.moviesapp.di.AppComponent
 import com.scan.moviesapp.di.AppModule
 import com.scan.moviesapp.di.DaggerAppComponent
 
+@OptIn(androidx.paging.ExperimentalPagingApi::class)
 class MoviesApp: Application() {
     private lateinit var appComponent: AppComponent
 

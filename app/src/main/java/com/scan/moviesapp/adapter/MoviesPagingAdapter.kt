@@ -1,15 +1,13 @@
 package com.scan.moviesapp.adapter
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import androidx.annotation.RequiresApi
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.scan.moviesapp.R
+import com.google.android.gms.ads.*
 import com.scan.moviesapp.databinding.AdItemBinding
 import com.scan.moviesapp.databinding.MovieItemBinding
 import com.scan.moviesapp.model.MovieItem
@@ -17,7 +15,10 @@ import com.scan.moviesapp.utils.OnAdClicked
 import com.scan.moviesapp.utils.OnMovieClicked
 import javax.inject.Inject
 
-class MoviesPagingAdapter @Inject constructor(): PagingDataAdapter<MovieItem,  RecyclerView.ViewHolder>(MoviesComprator) {
+
+class MoviesPagingAdapter @Inject constructor(): PagingDataAdapter<MovieItem, RecyclerView.ViewHolder>(
+    MoviesComprator
+) {
 
     private var movieListener: OnMovieClicked ? = null
     private var adListener: OnAdClicked ? = null
@@ -42,16 +43,32 @@ class MoviesPagingAdapter @Inject constructor(): PagingDataAdapter<MovieItem,  R
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == MOVIE_TYPE) MoviesViewHolder(MovieItemBinding.inflate(LayoutInflater.from(parent.context),parent,false),movieListener!!)
-        else AddViewHolder(AdItemBinding.inflate(LayoutInflater.from(parent.context),parent,false),adListener!!)
+        return if (viewType == MOVIE_TYPE) MoviesViewHolder(
+            MovieItemBinding.inflate(
+                LayoutInflater.from(
+                    parent.context
+                ), parent, false
+            ), movieListener!!
+        )
+        else AddViewHolder(
+            AdItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            ), adListener!!
+        )
     }
 
 
     override fun getItemViewType(position: Int): Int {
         return if (position % 5 == 0)  ADD_TYPE else MOVIE_TYPE
     }
-    class MoviesViewHolder(private val  binding: MovieItemBinding, private val listener: OnMovieClicked): RecyclerView.ViewHolder(binding.root) {
+    class MoviesViewHolder(
+        private val binding: MovieItemBinding,
+        private val listener: OnMovieClicked
+    ): RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MovieItem){
             binding.item = item
              itemView.setOnClickListener {
@@ -60,12 +77,17 @@ class MoviesPagingAdapter @Inject constructor(): PagingDataAdapter<MovieItem,  R
             }
         }
 
-    class AddViewHolder(private val  binding: AdItemBinding, private val listener: OnAdClicked): RecyclerView.ViewHolder(binding.root) {
+    @RequiresApi(Build.VERSION_CODES.R)
+    class AddViewHolder(private val binding: AdItemBinding, private val listener: OnAdClicked): RecyclerView.ViewHolder(
+        binding.root
+    ) {
         init {
-            binding.bannerAdView.adSize = AdSize.BANNER
-            binding.bannerAdView.adUnitId = "ca-app-pub-3940256099942544/6300978111"
-            val adRequest = AdRequest.Builder().build()
-            binding.bannerAdView.loadAd(adRequest)
+            val adView = AdView(itemView.context)
+            binding.adViewContainer.addView(adView)
+                adView.adUnitId = "ca-app-pub-3940256099942544/9214589741"
+                adView.adSize = AdSize.BANNER
+                val adRequest = AdRequest.Builder().build()
+                adView.loadAd(adRequest)
         }
     }
     }

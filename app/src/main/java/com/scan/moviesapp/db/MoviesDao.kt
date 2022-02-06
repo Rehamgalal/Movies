@@ -1,6 +1,5 @@
 package com.scan.moviesapp.db
 
-import androidx.paging.DataSource
 import androidx.paging.PagingSource
 import androidx.room.*
 import com.scan.moviesapp.model.MovieItem
